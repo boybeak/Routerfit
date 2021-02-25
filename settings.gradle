@@ -1,0 +1,7 @@
+include ':i-router'
+include ':i-router-register'
+include ':i-router-compiler'
+include ':i-router-core'
+include ':router'
+include ':app'
+rootProject.name = "Routerfit"
