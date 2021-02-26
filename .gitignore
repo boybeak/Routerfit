@@ -14,3 +14,4 @@ bintray-user.gradle
 .externalNativeBuild
 .cxx
 local.properties
+/shell

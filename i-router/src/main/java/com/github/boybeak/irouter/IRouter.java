@@ -47,7 +47,7 @@ public class IRouter {
         String path = routeTo.value();
         Class<? extends Interceptor>[] interceptorClasses = routeTo.interceptors();
 
-        Navigator navigator = new Navigator(path);
+        Navigator navigator = NavigatorCache.getInstance().obtain(path);
 
         if (interceptorClasses != null) {
             List<Interceptor> interceptorList = new ArrayList<>();
@@ -65,17 +65,13 @@ public class IRouter {
             navigator.putExtra(Constants.KEY_PATH, path);
         }
 
-        Class<?> targetClz = LoaderManager.getInstance().get(path);
-
-        if (targetClz == null) {
+        if (navigator.getTargetClz() == null) {
             if (errorActivityClz == null) {
                 throw new IllegalStateException("The target activity not found for " + path + ", and not config a errorActivityClass.");
             }
             navigator.setTargetClz(errorActivityClz);
             return navigator;
         }
-
-        navigator.setTargetClz(targetClz);
 
         Annotation[][] annotations = method.getParameterAnnotations();
         if (args != null) {

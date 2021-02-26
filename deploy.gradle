@@ -22,7 +22,7 @@ bintray {
     // package already exists. In that case, there's no need to configure the other package
     // properties (like userOrg, desc, etc).
     pkg {
-        repo = "nulldreams" //bintray repo
+        repo = "i-router" //bintray repo
         name = artifactId //bintray package
         version {
             name = version

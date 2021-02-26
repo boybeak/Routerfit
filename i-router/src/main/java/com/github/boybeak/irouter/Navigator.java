@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,8 +22,14 @@ public class Navigator {
     private Class<?> targetClz;
     private final List<Interceptor> interceptors = new ArrayList<>();
 
+    private boolean isDirty = false, isRecycled = false;
+
     Navigator(String path) {
         this.path = path;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     Navigator setTargetClz(Class<?> targetClz) {
@@ -29,24 +37,45 @@ public class Navigator {
         return this;
     }
 
+    void setDirty(boolean isDirty) {
+        this.isDirty = isDirty;
+    }
+
+    public Class<?> getTargetClz() {
+        return targetClz;
+    }
+
     public void startActivity(Context context) {
+        if (isRecycled()) {
+            throw new IllegalStateException("Do not use a recycled navigator");
+        }
         intent.setClass(context, targetClz);
         if (!(context instanceof Activity)) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        if (actionInterceptors(context)) {
-            return;
-        }
-        context.startActivity(intent);
+        new ActivityStarter().startActivity(context, intent, new ActivityStarter.Callback() {
+            @Override
+            public boolean onPreStart() {
+                return actionInterceptors(context);
+            }
+
+            @Override
+            public void onPostStart() {
+                recycle();
+            }
+        });
     }
 
     public void startActivityForResult(Context context, int requestCode, Navigator.OnActivityResult onActivityResult) {
+        if (isRecycled()) {
+            throw new IllegalStateException("Do not use a recycled navigator");
+        }
         intent.setClass(context, targetClz);
-        ResultManager.getInstance().startActivityForResult(context, intent, requestCode, onActivityResult,
-                () -> actionInterceptors(context));
+        ResultManager.getInstance().startActivityForResult(context, intent, requestCode,
+                onActivityResult, this);
     }
 
-    private boolean actionInterceptors(Context context) {
+    boolean actionInterceptors(Context context) {
         for (Interceptor interceptor : interceptors) {
             if (interceptor.intercept(context, path, intent)) {
                 return true;
@@ -146,6 +175,47 @@ public class Navigator {
         intent.putExtras(it);
         return this;
     }
+
+    void recycle() {
+        interceptors.clear();
+        intent = new Intent();
+        if (isDirty) {
+            path = null;
+            targetClz = null;
+            isDirty = false;
+        } else {
+            NavigatorCache.getInstance().put(this);
+        }
+        isRecycled = true;
+    }
+
+    boolean isRecycled() {
+        return isRecycled;
+    }
+
+    void reset() {
+        isRecycled = false;
+    }
+
+    /*boolean realStartActivity(Context context) {
+        if (actionInterceptors(context)) {
+            recycle();
+            return false;
+        }
+        context.startActivity(intent);
+        recycle();
+        return true;
+    }
+
+    boolean realStartActivityForResult(Fragment fragment, int requestCode) {
+        if (actionInterceptors(fragment.requireContext())) {
+            recycle();
+            return false;
+        }
+        fragment.startActivityForResult(intent, requestCode);
+        recycle();
+        return true;
+    }*/
 
     public interface OnActivityResult {
         void onActivityResult(int requestCode, int resultCode, Intent data);

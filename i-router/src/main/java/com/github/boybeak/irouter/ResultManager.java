@@ -31,10 +31,10 @@ class ResultManager {
     private ResultManager(){}
 
     void startActivityForResult(Context context, Intent intent, int requestCode, Navigator.OnActivityResult onActivityResult,
-                                OnPreStartActivity onPreStartActivity) {
+                                Navigator navigator) {
         String id = UUID.randomUUID().toString();
         if (context instanceof FragmentActivity) {
-            startActivityForResult(id, (FragmentActivity)context, intent, requestCode, onPreStartActivity);
+            startActivityForResult(id, (FragmentActivity)context, intent, requestCode, onActivityResult, navigator);
         } else {
             Intent delegateIt = new Intent(context, ResultDelegateActivity.class);
             delegateIt.putExtra(KEY_ID, id)
@@ -43,34 +43,51 @@ class ResultManager {
             if (!(context instanceof Activity)) {
                 delegateIt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
-            if (onPreStartActivity != null && onPreStartActivity.onPreStart()) {
-                return;
-            }
-            context.startActivity(delegateIt);
+            new ActivityStarter().startActivity(context, delegateIt, new ActivityStarter.Callback() {
+                @Override
+                public boolean onPreStart() {
+                    return navigator.actionInterceptors(context);
+                }
+
+                @Override
+                public void onPostStart() {
+                    idCallbackMap.put(id, onActivityResult);
+                    navigator.recycle();
+                }
+            });
         }
-        idCallbackMap.put(id, onActivityResult);
+
     }
 
     private void startActivityForResult(String id, FragmentActivity fragmentActivity, Intent intent,
-                                        int requestCode, OnPreStartActivity onPreStartActivity) {
+                                        int requestCode, Navigator.OnActivityResult onActivityResult,
+                                        Navigator navigator) {
         FragmentManager fm = fragmentActivity.getSupportFragmentManager();
         ResultDelegateFragment fragment = (ResultDelegateFragment)fm.findFragmentByTag(TAG_DELEGATE_FRAGMENT);
         if (fragment == null) {
             final ResultDelegateFragment newFragment = new ResultDelegateFragment();
             fm.beginTransaction().add(newFragment, TAG_DELEGATE_FRAGMENT).commitAllowingStateLoss();
-            handler.post(() -> startActivityForResult(id, newFragment, intent, requestCode, onPreStartActivity));
+            handler.post(() -> startActivityForResult(id, newFragment, intent, requestCode, onActivityResult, navigator));
         } else {
-            startActivityForResult(id, fragment, intent, requestCode, onPreStartActivity);
+            startActivityForResult(id, fragment, intent, requestCode, onActivityResult, navigator);
         }
     }
 
     private void startActivityForResult(String id, ResultDelegateFragment fragment, Intent intent,
-                                        int requestCode, OnPreStartActivity onPreStartActivity) {
-        if (onPreStartActivity != null && onPreStartActivity.onPreStart()) {
-            return;
-        }
+                                        int requestCode, Navigator.OnActivityResult onActivityResult, Navigator navigator) {
         fragment.setId(id);
-        fragment.startActivityForResult(intent, requestCode);
+        new ActivityStarter().startActivityForResult(fragment, intent, requestCode, new ActivityStarter.Callback() {
+            @Override
+            public boolean onPreStart() {
+                return navigator.actionInterceptors(fragment.getContext());
+            }
+
+            @Override
+            public void onPostStart() {
+                idCallbackMap.put(id, onActivityResult);
+                navigator.recycle();
+            }
+        });
     }
 
     Intent getRedirectIntent(Intent intent) {
