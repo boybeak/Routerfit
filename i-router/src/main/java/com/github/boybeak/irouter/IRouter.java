@@ -7,12 +7,15 @@ import android.text.TextUtils;
 
 import com.github.boybeak.irouter.core.LoaderManager;
 import com.github.boybeak.irouter.core.annotation.Extras;
+import com.github.boybeak.irouter.core.annotation.Inject;
 import com.github.boybeak.irouter.core.annotation.Key;
 import com.github.boybeak.irouter.core.annotation.RouteTo;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,10 @@ public class IRouter {
     }
 
     private Navigator parseMethod(Method method, Object[] args) {
+
+        if (method.getReturnType() != Navigator.class) {
+            throw new IllegalStateException("The method " + method.getName() + " must return Navigator");
+        }
 
         RouteTo routeTo = method.getAnnotation(RouteTo.class);
 
@@ -195,6 +202,29 @@ public class IRouter {
             return new IRouter(errorActivityClz, isDebug);
         }
 
+    }
+
+    public static void inject(Object obj, Intent intent) {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            final int modifiers = field.getModifiers();
+            if (Modifier.isStatic(modifiers) || Modifier.isFinal(modifiers)) {
+                continue;
+            }
+            if (!field.isAccessible()) {
+                field.setAccessible(true);
+            }
+            Inject inject = field.getAnnotation(Inject.class);
+            try {
+                field.set(obj, getValue(inject.value(), intent));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static Object getValue(String key, Intent intent) {
+        return intent.getExtras().get(key);
     }
 
 }

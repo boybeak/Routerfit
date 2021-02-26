@@ -32,11 +32,11 @@ android {
 }
 
 dependencies {
-    api 'com.github.boybeak:i-router-core:0.0.1'
+    api 'com.github.boybeak:i-router-core:0.0.4'
     implementation 'androidx.fragment:fragment:1.2.5'
 //    implementation 'androidx.annotation:annotation:1.1.0'
 //    implementation files('libs/i-router-core.jar')
-//    implementation project(':i-router-core')
+//    api project(':i-router-core')
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

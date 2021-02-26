@@ -6,7 +6,7 @@ ext {
     // This configuration will result in:
     // compile '<groupId>:<artifactId>:<libVersion>'
     groupId = 'com.github.boybeak' // package name of the project
-    libVersion = "0.0.1"
+    libVersion = "0.0.4"
 }
 
 version = libVersion
