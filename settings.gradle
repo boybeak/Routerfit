@@ -1,3 +1,4 @@
+include ':v2ex'
 include ':i-router'
 include ':i-router-register'
 include ':i-router-compiler'

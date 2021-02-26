@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/i-router-core" />
             <option value="$PROJECT_DIR$/i-router-register" />
             <option value="$PROJECT_DIR$/router" />
+            <option value="$PROJECT_DIR$/v2ex" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

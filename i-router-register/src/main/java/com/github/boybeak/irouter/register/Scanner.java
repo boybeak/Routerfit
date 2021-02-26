@@ -67,7 +67,6 @@ public class Scanner {
                 }
             }
             for (DirectoryInput directoryInput : input.getDirectoryInputs()) {
-                logger.lifecycle("directoryInput=" + directoryInput.getFile().getAbsolutePath());
                 File expectDir = new File(directoryInput.getFile(), com.github.boybeak.irouter.register.Constants.LOADER_PACKAGE_PATH);
                 if (expectDir.exists()) {
                     File[] loaders = expectDir.listFiles();

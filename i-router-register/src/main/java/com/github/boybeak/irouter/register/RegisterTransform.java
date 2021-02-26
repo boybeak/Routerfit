@@ -52,7 +52,6 @@ public class RegisterTransform extends Transform {
     @Override
     public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         super.transform(transformInvocation);
-        logger.lifecycle("transform running " + new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA).format(new Date()));
 
         scanner.scan(transformInvocation, (loaderManagerJar, loaderManagerEntryName, loaders) -> {
             Asm.getInstance().generateCode(loaderManagerJar, loaderManagerEntryName, loaders);

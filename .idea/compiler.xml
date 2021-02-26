@@ -6,6 +6,7 @@
       <module name="Routerfit.i-router" target="1.8" />
       <module name="Routerfit.i-router-register" target="1.8" />
       <module name="Routerfit.router" target="1.8" />
+      <module name="Routerfit.v2ex" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
