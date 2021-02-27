@@ -1,4 +1,4 @@
-# IRouter[ ![Download](https://api.bintray.com/packages/boybeak/i-router/i-router/images/download.svg) ](https://bintray.com/boybeak/i-router/i-router/_latestVersion)
+# IRouter[ ![Download](https://img.shields.io/badge/I--Router-0.05-blue)
 A new router. Source code ananylize.
 
 # Install
