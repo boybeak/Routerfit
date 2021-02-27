@@ -32,5 +32,6 @@ class MainActivity : AppCompatActivity() {
         }.onStart {
 //            Toast.makeText(this@MainActivity, "onStart", Toast.LENGTH_SHORT).show()
         }.observe(this)
+
     }
 }

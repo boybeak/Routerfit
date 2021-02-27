@@ -1,5 +1,5 @@
 # IRouter[ ![Download](https://api.bintray.com/packages/boybeak/i-router/i-router/images/download.svg) ](https://bintray.com/boybeak/i-router/i-router/_latestVersion)
-手撸了一个路由框架
+A new router. Source code ananylize.
 
 # Install
 
@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+  implementation 'androidx.fragment:fragment:1.2.5'
   implementation "com.github.boybeak:i-router:$i_router_version"
   kapt "com.github.boybeak:i-router-compiler:$i_router_version"
 }
@@ -59,6 +60,7 @@ android {
 }
 
 dependencies {
+  implementation 'androidx.fragment:fragment:1.2.5'
   implementation "com.github.boybeak:i-router:$i_router_version"
   kapt "com.github.boybeak:i-router-compiler:$i_router_version"
 }
@@ -116,4 +118,9 @@ Finally, use the `iRouter`.
 
 ```kotlin
 iRouter.topicDetail(topic).startActivity(this@MainActivity)
+
+// OR
+
+iRouter.topicDetail(topic).startActivityForResult(this, 100) { requestCode, resultCode, data ->
+}
 ```

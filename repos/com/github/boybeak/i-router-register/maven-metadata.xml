@@ -3,10 +3,11 @@
   <groupId>com.github.boybeak</groupId>
   <artifactId>i-router-register</artifactId>
   <versioning>
-    <release>1.0.0</release>
+    <release>0.0.4-local</release>
     <versions>
       <version>1.0.0</version>
+      <version>0.0.4-local</version>
     </versions>
-    <lastUpdated>20210226190830</lastUpdated>
+    <lastUpdated>20210227170644</lastUpdated>
   </versioning>
 </metadata>

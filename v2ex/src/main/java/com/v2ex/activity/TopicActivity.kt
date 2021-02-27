@@ -23,7 +23,6 @@ class TopicActivity : AppCompatActivity() {
         IRouter.inject(this, intent)
 
         findViewById<AppCompatTextView>(R.id.titleTV).text = topic!!.content
-
     }
 
 }

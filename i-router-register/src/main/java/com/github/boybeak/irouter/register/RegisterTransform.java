@@ -10,9 +10,6 @@ import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Set;
 
 public class RegisterTransform extends Transform {
@@ -54,7 +51,7 @@ public class RegisterTransform extends Transform {
         super.transform(transformInvocation);
 
         scanner.scan(transformInvocation, (loaderManagerJar, loaderManagerEntryName, loaders) -> {
-            Asm.getInstance().generateCode(loaderManagerJar, loaderManagerEntryName, loaders);
+            ASM.getInstance().generateCode(loaderManagerJar, loaderManagerEntryName, loaders);
         });
     }
 

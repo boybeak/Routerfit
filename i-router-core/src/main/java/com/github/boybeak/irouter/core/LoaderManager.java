@@ -3,7 +3,7 @@ package com.github.boybeak.irouter.core;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoaderManager {
+public final class LoaderManager {
     private static final LoaderManager sManager = new LoaderManager();
 
     public static LoaderManager getInstance() {

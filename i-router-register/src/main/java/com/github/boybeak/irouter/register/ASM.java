@@ -18,14 +18,14 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
-public class Asm {
+public class ASM {
 
-    private static Asm sAsm = new Asm();
-    public static Asm getInstance() {
+    private static ASM sAsm = new ASM();
+    public static ASM getInstance() {
         return sAsm;
     }
 
-    private Asm(){}
+    private ASM(){}
 
     public void generateCode(File jarFile, String loaderManagerEntryName, List<String> loaders) {
         if (jarFile == null || !jarFile.exists()) {

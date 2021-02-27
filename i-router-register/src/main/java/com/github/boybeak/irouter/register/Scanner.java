@@ -75,7 +75,7 @@ public class Scanner {
                     }
                     for (File loader : loaders) {
                         if (loader.isFile()) {
-                            loaderClzList.add(formatToLoaderClass(loader.getAbsolutePath()));
+                            addIfNotExist(formatToLoaderClass(loader.getAbsolutePath()));
                         }
                     }
                 }
@@ -103,7 +103,7 @@ public class Scanner {
                 JarEntry jarEntry = enumeration.nextElement();
                 String entryName = jarEntry.getName();
                 if (entryName.startsWith(com.github.boybeak.irouter.register.Constants.LOADER_PACKAGE_PATH)) {
-                    loaderClzList.add(formatToLoaderClass(entryName));
+                    addIfNotExist(formatToLoaderClass(entryName));
                 } else if (entryName.endsWith(com.github.boybeak.irouter.register.Constants.LOADER_MANAGER_PATH)) {
                     loaderManagerEntryName = entryName;
                     loaderManagerJar = destFile;
@@ -113,6 +113,13 @@ public class Scanner {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addIfNotExist(String loader) {
+        if (loaderClzList.contains(loader)) {
+            return;
+        }
+        loaderClzList.add(loader);
     }
 
     /*private void scanClass(File file) {
