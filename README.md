@@ -1,4 +1,4 @@
-# IRouter[ ![Download](https://img.shields.io/badge/I--Router-0.05-blue)
+# IRouter ![Version](https://img.shields.io/badge/version-0.05-blue)
 A new router. Source code ananylize.
 
 # Install
