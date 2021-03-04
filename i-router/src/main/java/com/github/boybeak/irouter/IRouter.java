@@ -74,7 +74,7 @@ public class IRouter {
 
         if (navigator.getTargetClz() == null) {
             if (errorActivityClz == null) {
-                throw new IllegalStateException("The target activity not found for " + path + ", and not config a errorActivityClass.");
+                throw new IllegalStateException("The target activity not found for " + path + ", and no errorActivity was set.");
             }
             navigator.setTargetClz(errorActivityClz);
             return navigator;
@@ -187,6 +187,14 @@ public class IRouter {
 
         private Class<?> errorActivityClz;
         private boolean isDebug;
+
+        public Builder errorActivity(String path) {
+            Class<?> errorClz = LoaderManager.getInstance().get(path);
+            if (errorClz == null) {
+                throw NoRouteException.create(path);
+            }
+            return errorActivity(errorClz);
+        }
 
         public Builder errorActivity(Class<?> errorActivityClz) {
             this.errorActivityClz = errorActivityClz;

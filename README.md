@@ -1,4 +1,4 @@
-# IRouter ![Version](https://img.shields.io/badge/version-0.05-blue)
+# IRouter ![Version](https://img.shields.io/badge/version-0.06-blue)
 A new router. [Source code ananylize](https://boybeak.github.io/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6IRouter.html).
 
 # Install
